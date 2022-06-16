@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 import main from "../assets/images/main-alternative.svg";
 import Wrapper from "../assets/wrappers/LandingPage";
@@ -22,9 +22,9 @@ function Landing() {
             quinoa lo-fi tote bag adaptogen everyday carry meggings +1 brunch
             narwhal.
           </p>
-          {/* <Link to="/register" className="btn btn-hero">
+          <Link to="/register" className="btn btn-hero">
             Login/Register
-          </Link> */}
+          </Link>
         </div>
         <img src={main} alt="job hunt" className="img main-img" />
       </div>
