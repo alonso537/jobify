@@ -15,7 +15,7 @@ const Register = () => {
   const [values, setValues] = useState(initialState);
   //global state and useNavigate
   const navigate = useNavigate();
-  const { user, isLoading, showAlert, displayAlert, registerUser } =
+  const { user, isLoading, showAlert, displayAlert, setupUser } =
     useAppContext();
 
   const toggleMember = () => {
@@ -42,9 +42,17 @@ const Register = () => {
       password,
     };
     if (isMember) {
-      console.log("Al ready a member");
+      setupUser({
+        currentUser,
+        endpoint: "login",
+        alertText: "Login successful! Redirecting...",
+      });
     } else {
-      registerUser(currentUser);
+      setupUser({
+        currentUser,
+        endpoint: "register",
+        alertText: "User registered successfully! Redirecting...",
+      });
     }
   };
 
