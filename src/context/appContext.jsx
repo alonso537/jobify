@@ -6,6 +6,8 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
 import reducer from "./reducer";
 
@@ -22,6 +24,7 @@ export const initialState = {
   token: token ? token : null,
   userLocation: userLocation || "",
   jobLocation: userLocation || "",
+  showSidebar: false,
 };
 
 const AppContext = createContext();
@@ -76,12 +79,23 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserFromLocalStorage();
+  };
+
   return (
     <AppContext.Provider
       value={{
         ...state,
         displayAlert,
         setupUser,
+        toggleSidebar,
+        logoutUser,
       }}
     >
       {children}
