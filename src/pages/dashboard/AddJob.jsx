@@ -19,7 +19,7 @@ const AddJob = () => {
     handleChange,
     clearValues,
     createJob,
-    editjob,
+    editJob,
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ const AddJob = () => {
     //   displayAlert("Please fill out all fields", "danger");
     // }
     if (isEditing) {
-      editjob();
+      editJob();
       return;
     }
     createJob();
@@ -93,7 +93,7 @@ const AddJob = () => {
               className="btn btn-block submit-btn"
               disabled={isLoading}
             >
-              Add Job
+              {editJob ? "edit job" : "add job"}
             </button>
             <div
               className="btn btn-block clear-btn"
