@@ -16,8 +16,11 @@ import {
   CREATE_JOB_BEGIN,
   CREATE_JOB_ERROR,
   CREATE_JOB_SUCCESS,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
 } from "./actions";
 import reducer from "./reducer";
+import { useEffect } from "react";
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
@@ -41,6 +44,10 @@ export const initialState = {
   jobType: "full-time",
   statusOptions: ["interview", "declined", "pending"],
   status: "pending",
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
 };
 
 const AppContext = createContext();
@@ -71,7 +78,7 @@ const AppProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      console.log(error.response);
+      console.log(error.response.data);
       if (error.response.status === 401) {
         logoutUser();
       }
@@ -153,7 +160,7 @@ const AppProvider = ({ children }) => {
       });
     } catch (error) {
       if (error.response.status !== 401) {
-        console.log(error.data);
+        console.log(error.response.data);
         dispatch({
           type: UPDATE_USER_ERROR,
           payload: "Error",
@@ -190,13 +197,39 @@ const AppProvider = ({ children }) => {
       });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
-      console.log(error.data);
+      console.log(error.response.data);
       dispatch({
         type: CREATE_JOB_ERROR,
-        payload: "Error",
+        payload: error.response.data,
       });
     }
     clearAlert();
+  };
+
+  const getJobs = async () => {
+    let url = `/jobs`;
+
+    dispatch({ type: GET_JOBS_BEGIN });
+    try {
+      const { data } = await authFetch.get(url);
+      const { jobs, totalJobs, numOfPages, page } = data;
+      dispatch({
+        type: GET_JOBS_SUCCESS,
+        payload: { jobs, totalJobs, numOfPages, page },
+      });
+    } catch (error) {
+      console.log(error.response);
+      // logoutUser();
+    }
+    clearAlert();
+  };
+
+  const setEditJob = (id) => {
+    console.log(`set edit job ${id}`);
+  };
+
+  const deleteJob = (id) => {
+    console.log(`set delete job ${id}`);
   };
 
   return (
@@ -211,6 +244,9 @@ const AppProvider = ({ children }) => {
         handleChange,
         clearValues,
         createJob,
+        getJobs,
+        setEditJob,
+        deleteJob,
       }}
     >
       {children}
