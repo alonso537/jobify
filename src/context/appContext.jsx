@@ -8,6 +8,9 @@ import {
   SETUP_USER_SUCCESS,
   TOGGLE_SIDEBAR,
   LOGOUT_USER,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_SUCCESS,
 } from "./actions";
 import reducer from "./reducer";
 
@@ -57,9 +60,7 @@ const AppProvider = ({ children }) => {
     (error) => {
       console.log(error.response);
       if (error.response.status === 401) {
-        dispatch({
-          type: LOGOUT_USER,
-        });
+        logoutUser();
       }
       return Promise.reject(error);
     }
@@ -107,6 +108,7 @@ const AppProvider = ({ children }) => {
         payload: "Error",
       });
     }
+    clearAlert();
   };
 
   const toggleSidebar = () => {
@@ -119,11 +121,12 @@ const AppProvider = ({ children }) => {
   };
 
   const updateUser = async (currentUser) => {
+    dispatch({ type: UPDATE_USER_BEGIN });
     try {
       const { data } = await authFetch.patch(`/auth/updateUser`, currentUser);
       // console.log(data);
       dispatch({
-        type: SETUP_USER_SUCCESS,
+        type: UPDATE_USER_SUCCESS,
         payload: {
           user: data.user,
           token: data.token,
@@ -136,8 +139,15 @@ const AppProvider = ({ children }) => {
         location: data.location,
       });
     } catch (error) {
-      console.log(error.data);
+      if (error.response.status !== 401) {
+        console.log(error.data);
+        dispatch({
+          type: UPDATE_USER_ERROR,
+          payload: "Error",
+        });
+      }
     }
+    clearAlert();
   };
 
   return (
