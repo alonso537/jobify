@@ -5,6 +5,8 @@ import { useAppContext } from "../../context/appContext";
 const Stats = () => {
   const { showStats, isLoading, monthlyApplications } = useAppContext();
 
+  console.log(monthlyApplications);
+
   useEffect(() => {
     showStats();
   }, []);
@@ -16,7 +18,7 @@ const Stats = () => {
   return (
     <>
       <StatsContainer />
-      {monthlyApplications > 0 && (
+      {monthlyApplications.length > 0 && (
         <ChartsContainer monthlyApplications={monthlyApplications} />
       )}
     </>
