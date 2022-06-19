@@ -32,6 +32,39 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const authFetch = axios.create({
+    baseURL: `${import.meta.env.VITE_APP_BACK_URL}/api/v1`,
+  });
+
+  //request
+
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common["Authorization"] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  //response
+
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        dispatch({
+          type: LOGOUT_USER,
+        });
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
     clearAlert();
@@ -58,10 +91,7 @@ const AppProvider = ({ children }) => {
   const setupUser = async ({ currentUser, endpoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN });
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/${endpoint}`,
-        currentUser
-      );
+      const { data } = await authFetch.post(`/auth/${endpoint}`, currentUser);
 
       const { user, token, location } = data;
       dispatch({
@@ -88,6 +118,28 @@ const AppProvider = ({ children }) => {
     removeUserFromLocalStorage();
   };
 
+  const updateUser = async (currentUser) => {
+    try {
+      const { data } = await authFetch.patch(`/auth/updateUser`, currentUser);
+      // console.log(data);
+      dispatch({
+        type: SETUP_USER_SUCCESS,
+        payload: {
+          user: data.user,
+          token: data.token,
+          location: data.location,
+        },
+      });
+      addUserToLocalStorage({
+        user: data.user,
+        token: data.token,
+        location: data.location,
+      });
+    } catch (error) {
+      console.log(error.data);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -96,6 +148,7 @@ const AppProvider = ({ children }) => {
         setupUser,
         toggleSidebar,
         logoutUser,
+        updateUser,
       }}
     >
       {children}
