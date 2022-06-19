@@ -19,6 +19,7 @@ const AddJob = () => {
     handleChange,
     clearValues,
     createJob,
+    editjob,
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -27,6 +28,7 @@ const AddJob = () => {
     //   displayAlert("Please fill out all fields", "danger");
     // }
     if (isEditing) {
+      editjob();
       return;
     }
     createJob();

@@ -16,6 +16,7 @@ import {
   CREATE_JOB_SUCCESS,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -174,6 +175,21 @@ const reducer = (state, action) => {
       // showAlert: true,
       // alertText: "Jobs retrieved successfully",
       // alertType: "success",
+    };
+  }
+  if (action.type === SET_EDIT_JOB) {
+    const job = state.jobs.find((job) => job._id === action.payload);
+
+    const { _id, position, company, jobLocation, jobType, status } = job;
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      company,
+      jobLocation,
+      jobType,
+      status,
     };
   }
 

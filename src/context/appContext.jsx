@@ -18,6 +18,7 @@ import {
   CREATE_JOB_SUCCESS,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
 } from "./actions";
 import reducer from "./reducer";
 import { useEffect } from "react";
@@ -224,8 +225,13 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const setEditJob = (id) => {
-    console.log(`set edit job ${id}`);
+  const setEditJob = (jobId) => {
+    // console.log(jobId);
+    dispatch({ type: SET_EDIT_JOB, payload: jobId });
+  };
+
+  const editJob = () => {
+    console.log("edit job");
   };
 
   const deleteJob = (id) => {
@@ -247,6 +253,7 @@ const AppProvider = ({ children }) => {
         getJobs,
         setEditJob,
         deleteJob,
+        editJob,
       }}
     >
       {children}
