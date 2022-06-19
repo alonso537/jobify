@@ -238,8 +238,8 @@ const AppProvider = ({ children }) => {
         payload: { jobs, totalJobs, numOfPages, page },
       });
     } catch (error) {
-      console.log(error.response);
-      // logoutUser();
+      // console.log(error.response);
+      logoutUser();
     }
     clearAlert();
   };
@@ -282,7 +282,8 @@ const AppProvider = ({ children }) => {
       await authFetch.delete(`/jobs/${id}`);
       getJobs();
     } catch (error) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
+      logoutUser();
     }
   };
 
@@ -299,8 +300,8 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error.response.data);
-      // logoutUser();
+      // console.log(error.response.data);
+      logoutUser();
     }
   };
 

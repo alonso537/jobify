@@ -93,7 +93,7 @@ const AddJob = () => {
               className="btn btn-block submit-btn"
               disabled={isLoading}
             >
-              {editJob ? "edit job" : "add job"}
+              {isEditing ? "edit job" : "add job"}
             </button>
             <div
               className="btn btn-block clear-btn"

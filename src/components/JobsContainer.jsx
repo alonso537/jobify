@@ -21,6 +21,7 @@ const JobsContainer = () => {
 
   useEffect(() => {
     getJobs();
+    // eslint-disable-next-line
   }, [page, search, searchStatus, searchType, sort]);
 
   if (isLoading) {
@@ -46,7 +47,7 @@ const JobsContainer = () => {
         })}
       </div>
       {/* {pagination buttons/} */}
-      {numOfPages >= 1 && <PageBtnContainer />}
+      {numOfPages > 1 && <PageBtnContainer />}
     </Wrapper>
   );
 };
