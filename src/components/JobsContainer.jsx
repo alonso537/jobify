@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Wrapper from "../assets/wrappers/JobsContainer";
 import { useAppContext } from "../context/appContext";
 import Job from "./Job";
-import Loadnig from "./Loadnig";
+import Loading from "./Loadnig";
 
 const JobsContainer = () => {
   const { getJobs, jobs, isLoading, page, totalJobs } = useAppContext();
@@ -12,7 +12,7 @@ const JobsContainer = () => {
   }, []);
 
   if (isLoading) {
-    return <Loadnig center />;
+    return <Loading center />;
   }
 
   if (jobs.length === 0) {
