@@ -4,10 +4,11 @@ import { useAppContext } from "../context/appContext";
 import AreaChartComponent from "./AreaChart";
 import BarChartComponent from "./BarChart";
 
-const ChartsContainer = () => {
+const ChartsContainer = ({ props }) => {
   const [barChart, setBarChart] = useState(true);
 
   const { monthlyApplications: data } = useAppContext();
+  // console.log(data);
 
   return (
     <Wrapper>

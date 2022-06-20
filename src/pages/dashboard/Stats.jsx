@@ -5,7 +5,7 @@ import { useAppContext } from "../../context/appContext";
 const Stats = () => {
   const { showStats, isLoading, monthlyApplications } = useAppContext();
 
-  console.log(monthlyApplications);
+  // console.log(monthlyApplications);
 
   useEffect(() => {
     showStats();

@@ -296,7 +296,7 @@ const AppProvider = ({ children }) => {
         type: SHOW_STATS_SUCCESS,
         payload: {
           stats: data.defaultStats,
-          monthlyApplications: data.monthyApplications,
+          monthlyApplications: data.monthlyApplications,
         },
       });
     } catch (error) {
@@ -313,6 +313,8 @@ const AppProvider = ({ children }) => {
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
+
+  // console.log(state.stats);
 
   return (
     <AppContext.Provider
